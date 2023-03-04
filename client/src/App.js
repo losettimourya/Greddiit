@@ -6,6 +6,7 @@ import ToggleForm from "./components/Mixed";
 import Dashboard from "./components/Dashboard";
 import Subgreddiit from "./components/Main/Subgreddiit";
 import SubredditsList from "./components/Main/Allsubgreddit";
+import SubredditDetails from "./components/Main/Allsubgredditid";
 
 function App() {
 	const user = localStorage.getItem("token");
@@ -19,10 +20,13 @@ function App() {
 			{user && <Route path="/" element={<Navigate replace to="/dashboard"/>} />}
 			{user && <Route path="/subgreddiit" exact element={<Subgreddiit/>} />}
 			{user && <Route path="/allsubgreddiit" exact element={<SubredditsList/>} />}
+			{user && <Route path="/allsubgreddiit/:id" exact element={<SubredditDetails />} />}
 			<Route path="/" exact element={<ToggleForm />} />
 			<Route path="/home" element={<Navigate replace to="/" />} />
 			<Route path="/dashboard" element={<Navigate replace to="/" />} />
-			<Route path="subgreddiit" element={<Navigate replace to="/" />} />
+			<Route path="/subgreddiit" element={<Navigate replace to="/" />} />
+			<Route path="/allsubgreddiit" element={<Navigate replace to="/" />} />
+			<Route path="/allsubgreddiit/:id" element={<Navigate replace to="/" />} />
 		</Routes>
 	);
 }

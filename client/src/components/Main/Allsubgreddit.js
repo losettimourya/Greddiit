@@ -18,11 +18,11 @@ const SubredditsList = () => {
   return (
     <div>
         <Navbar />
-      <h1>All subreddits</h1>
+      <h1>All subgreddiits</h1>
       <ul>
         {subreddits.map(subreddit => (
           <li key={subreddit._id}>
-            <a href={`/subgreddit/${subreddit._id}`}>{subreddit.subredditName}</a>
+            <a href={`/allsubgreddiit/${subreddit._id}`}>{subreddit.subredditName}</a>
           </li>
         ))}
       </ul>

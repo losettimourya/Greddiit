@@ -24,4 +24,14 @@ router.post("/", async (req, res) => {
 		res.status(500).send({ message: `${error}` });
 	}
 });
+router.get("/", async(req, res) => {
+	try {
+		const userr = await User.findOne({ email: req.body.email});
+		res.json(userr);
+
+	}
+	catch(error) {
+		console.log(error)
+	}
+})
 module.exports = router;

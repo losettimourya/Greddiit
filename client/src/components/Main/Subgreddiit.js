@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import Navbar from "../Navbar";
 import axios from "axios";
 function Subgreddiit() {
+  const [subreddits, setSubreddits] = useState([]);
+
+  useEffect(() => {
+    const fetchSubreddits = async () => {
+      const response = await axios.get("http://localhost:8080/api/subgreddit");
+     // console.log(response.data.subredditName)
+      setSubreddits(response.data);
+    };
+
+    fetchSubreddits();
+  }, []);
   const [showForm, setShowForm] = useState(false);
-  const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [] });
+  const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [], admin: ""});
   const handleChangeName = (event) => {
+    setnameform({ ...nameform, admin: localStorage.getItem("token")})
     setnameform({ ...nameform, name: event.target.value})
   }
   const handleChangeDesc = (event) => {
@@ -83,6 +95,14 @@ function Subgreddiit() {
         </button>
     </form>
       )}
+      <h2>My Subgreddiits</h2>
+      <ul>
+        {subreddits.map(subreddit => (
+          <li key={subreddit._id}>
+            <a href={`/allsubgreddiit/${subreddit._id}`}>{subreddit.subredditName}</a>
+          </li>
+        ))}
+      </ul>
     <div>
 
     </div>
