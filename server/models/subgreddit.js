@@ -13,7 +13,7 @@ const subredditSchema = new mongoose.Schema(
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
+        ref: 'Posts',
       },
     ],
     // admin: {

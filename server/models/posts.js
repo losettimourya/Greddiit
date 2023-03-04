@@ -68,7 +68,6 @@ const postSchema = new mongoose.Schema({
   },
   postType: {
     type: String,
-    required: true,
   },
   textSubmission: {
     type: String,
@@ -92,9 +91,12 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subreddit',
   },
+  // author: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User',
+  // },
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
   },
   upvotedBy: [
     {
@@ -138,4 +140,5 @@ const postSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
+const posts = mongoose.model("Posts", postSchema)
+module.exports = {posts};

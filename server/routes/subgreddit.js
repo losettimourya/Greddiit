@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {subgreddiit} = require("../models/subgreddit")
+const {posts} = require("../models/posts")
 router.post("/", async (req,res) => {
     try {
         // const subgred = await subgreddiit.findOne({subredditName: req.body.name})
@@ -48,6 +49,41 @@ router.get("/:id", async(req,res) => {
         console.log(error)
     }
 });
+router.post("/:id/posts", async(req,res) => {
+    try{
+        const subred = await subgreddiit.findById(req.params.id)
+        if (!subred) {
+            return res.status(404).json({ message: 'Subreddit not found' });
+          }
+        const postt = await new posts({
+            title: req.body.title,
+            author: req.body.author,
+            textSubmission: req.body.content,
+        }).save()
+        subred.posts.push(postt)
+        await subred.save()
+        res.send(postt)
+    }
+    catch(error){
+        console.log(error)
+    }
+})
+router.get("/:id/posts", async(req,res) => {
+    try{
+        const subred = await subgreddiit.findById(req.params.id)
+        let m = []
+        for (i=0;i<subred.posts.length;i++)
+        {
+        const k = await posts.findById(subred.posts[0])
+        m.push(k)
+        }
+        console.log(m)
+        res.json(m)
+    }
+    catch(error){
+        console.log(error)
+    }
+})
 // router.get("/", async(req,res) => {
 //     try{
 //         const subred = await subgreddiit.findOne({admin : localStorage.getItem("token")});
