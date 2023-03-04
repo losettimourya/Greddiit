@@ -9,15 +9,17 @@ function Subgreddiit() {
     const fetchSubreddits = async () => {
       const response = await axios.get("http://localhost:8080/api/subgreddit");
      // console.log(response.data.subredditName)
-      setSubreddits(response.data);
+     const filtered = response.data.filter(subreddit => subreddit.admin === localStorage.getItem("token"));
+      setSubreddits(filtered);
     };
 
     fetchSubreddits();
   }, []);
   const [showForm, setShowForm] = useState(false);
-  const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [], admin: ""});
+  const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [], admin: localStorage.getItem("token")});
+  // const b = "Losetti Mourya"
+  //   setnameform({ ...nameform, admin: b})
   const handleChangeName = (event) => {
-    setnameform({ ...nameform, admin: localStorage.getItem("token")})
     setnameform({ ...nameform, name: event.target.value})
   }
   const handleChangeDesc = (event) => {

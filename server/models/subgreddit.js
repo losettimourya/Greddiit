@@ -16,9 +16,12 @@ const subredditSchema = new mongoose.Schema(
         ref: 'Post',
       },
     ],
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    // admin: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'User',
+    // },
+    admin:  {
+      type: String,
     },
     followedBy: [
       {
