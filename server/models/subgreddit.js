@@ -5,7 +5,6 @@ const subredditSchema = new mongoose.Schema(
     subredditName: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,

@@ -26,8 +26,8 @@ function Subgreddiit() {
 		try {
 			const url = "http://localhost:8080/api/subgreddit";
 			const res = await axios.post(url, nameform);
-      console.log("res",res)
-			await localStorage.setItem("subgreddittoken", res.nameform.name);
+      console.log("res",res.data)
+			// await localStorage.setItem("subgreddittoken", res.nameform.name);
       console.log(res.nameform.name)
 			// window.location = "/dashboard";
 		} catch (error) {
