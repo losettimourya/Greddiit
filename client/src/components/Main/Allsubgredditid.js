@@ -6,7 +6,7 @@ import styles from "./styles.module.css";
 
 const SubredditDetails = () => {
   const [postts, setposts] = useState([]);
-  const [nameform, setnameform] = useState({ title: "", content: "", author: localStorage.getItem("token")});
+  const [nameform, setnameform] = useState({ title: "", content: "", author: localStorage.getItem("token"), subreddit: useParams().id});
   const [showForm, setShowForm] = useState(false);
   const [subreddit, setSubreddit] = useState(null);
   const idd = useParams()
@@ -70,12 +70,17 @@ const SubredditDetails = () => {
     return <div>Loading...</div>;
   }
   //console.log(subreddit)
+  console.log(subreddit.bannedkeywords)
+  let commasep = subreddit.bannedkeywords.join(",")
   return (
     <div>
       <Navbar />
       <h1>Name: {subreddit.subredditName}</h1>
       <p>Description: {subreddit.description}</p>
       <p>Created by: {subreddit.admin}</p>
+      <p>Banned key words:</p>
+      <p>{commasep}</p>
+      <p>Number of posts: {subreddit.posts.length}</p>
       <button onClick={handleClick}>Add new post</button>
       {showForm && (
         <form className={styles.form_container} onSubmit={handleSubmit}>

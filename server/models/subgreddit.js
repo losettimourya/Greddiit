@@ -33,6 +33,11 @@ const subredditSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    bannedkeywords: [
+      {
+        type: String,
+      }
+    ],
   },
   {
     timestamps: true,

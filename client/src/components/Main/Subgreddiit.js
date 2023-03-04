@@ -15,6 +15,20 @@ function Subgreddiit() {
 
     fetchSubreddits();
   }, []);
+  const fetchSubreddits = async () => {
+    const response = await axios.get("http://localhost:8080/api/subgreddit");
+   // console.log(response.data.subredditName)
+   const filtered = response.data.filter(subreddit => subreddit.admin === localStorage.getItem("token"));
+    setSubreddits(filtered);
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/subgreddit/${id}`);
+      fetchSubreddits();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const [showForm, setShowForm] = useState(false);
   const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [], admin: localStorage.getItem("token")});
   // const b = "Losetti Mourya"
@@ -102,6 +116,7 @@ function Subgreddiit() {
         {subreddits.map(subreddit => (
           <li key={subreddit._id}>
             <a href={`/allsubgreddiit/${subreddit._id}`}>{subreddit.subredditName}</a>
+            <button onClick={() => handleDelete(subreddit._id)}>Delete</button>
           </li>
         ))}
       </ul>

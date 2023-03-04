@@ -15,6 +15,7 @@ router.post("/", async (req,res) => {
             posts: [],
             followedBy: [],
             followerCount: 1,
+            bannedkeywords: req.body.bannedkeywords
         }).save();
         res.status(201).send(newsubgreddit);
     }
@@ -59,6 +60,7 @@ router.post("/:id/posts", async(req,res) => {
             title: req.body.title,
             author: req.body.author,
             textSubmission: req.body.content,
+            subreddit: req.body.subreddit
         }).save()
         subred.posts.push(postt)
         await subred.save()
@@ -77,10 +79,21 @@ router.get("/:id/posts", async(req,res) => {
         const k = await posts.findById(subred.posts[0])
         m.push(k)
         }
-        console.log(m)
+        //console.log(m)
         res.json(m)
     }
     catch(error){
+        console.log(error)
+    }
+})
+router.delete("/:id", async(req,res) => {
+    try{
+        const { id } = req.params;
+        await posts.deleteMany({subreddit: id})
+        await subgreddiit.findByIdAndDelete(id)
+    }
+    catch(error)
+    {
         console.log(error)
     }
 })
