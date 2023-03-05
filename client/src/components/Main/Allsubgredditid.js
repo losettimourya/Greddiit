@@ -13,12 +13,14 @@ import {
 } from '../Navbar/NavbarElements';
 
 const SubredditDetails = () => {
+  const [comment,setcomment] = useState('')
   const [postts, setposts] = useState([]);
   const [nameform, setnameform] = useState({ title: "", content: "", author: localStorage.getItem("token"), subreddit: useParams().id});
   const [showForm, setShowForm] = useState(false);
   const [subreddit, setSubreddit] = useState(null);
   const idd = useParams()
 //   console.log(idd)
+let abc = ""
   useEffect(() => {
     const fetchSubreddit = async () => {
     try{
@@ -42,8 +44,41 @@ const SubredditDetails = () => {
       .post("http://localhost:8080/api/savedpost", { post: id, name: localStorage.getItem("token")})
       .catch((err) => console.log(err));
   }
+  const handleupvote = async(id) => {
+    axios
+      .post("http://localhost:8080/api/subgreddit/upvote", { post: id, name: localStorage.getItem("token")})
+      .catch((err) => console.log(err));
+  }
+  const handledownvote = async(id) => {
+    axios
+      .post("http://localhost:8080/api/subgreddit/downvote", { post: id, name: localStorage.getItem("token")})
+      .catch((err) => console.log(err));
+  }
   const handleClick = () => {
     setShowForm(true)
+  }
+  const handleaddcomment = (postt) => {
+    try{
+      console.log(comment)
+      axios
+        .post("http://localhost:8080/api/subgreddit/comments", { post: postt, comment: comment})
+        .catch((err) => console.log(err));
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  const handleFollow = async(email) => {
+    try{
+      const data = {
+        email: email,
+        email2: localStorage.getItem("token")
+      }
+    axios.post("http://localhost:8080/api/users/followers", data)
+    }
+    catch(error){
+      console.log(error)
+    }
   }
   const handleChangetitle = (event) => {
     setnameform({ ...nameform, title: event.target.value})
@@ -140,11 +175,31 @@ const SubredditDetails = () => {
             <h3>Title: {postt.title}</h3>
             <p>Content: {postt.textSubmission}</p>
             <p>Author: {postt.author}</p>
+            <p>Upvote count: {postt.upvotecount}</p>
+            <p>Downvote count: {postt.downvotecount}</p>
+            <button onClick={(event) => handleFollow(postt.author)}> Follow </button>
             {(postt.isSaved) ? (
         <p>Post saved!</p>
       ) : (
         <button onClick={(event) => handleSavePost(postt._id)}>Save post</button>
       )}
+      <button onClick={(event) => handleupvote(postt._id)}>Upvote</button>
+      <button onClick={(event) => handledownvote(postt._id)}>Downvote</button>
+      <br />
+      <form onSubmit={(event) => handleaddcomment(postt._id)}>
+  <div>
+    <label for="comment">Add Comment:</label>
+    <input id="comment" value={comment} onChange={(event) => setcomment(event.target.value)} required/>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+<h3>Comments:</h3>
+<h3>{postt.comments.length}</h3>
+<ul>
+{postt.comments.map(comment => (
+  <li>{comment}</li>
+))}
+</ul>
           </li>
         ))}
       </ul>

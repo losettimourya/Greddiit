@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
 		//const token = a
 		//const token = await user.generateAuthtoken()
 		//console.log(token);
-		const token = user.firstName.concat(" ", user.lastName)
+		const token = user.email
 		//localStorage.setItem("firstname", user.firstName)
 		//localStorage.setItem("lastname", user.lastName)
 		console.log(token)

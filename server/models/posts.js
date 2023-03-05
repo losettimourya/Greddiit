@@ -102,18 +102,16 @@ const postSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  upvotedBy: [
+  upvotecount:
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: Number,
+      default: 0,
     },
-  ],
-  downvotedBy: [
+  downvotecount:
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: Number,
+      default: 0,
     },
-  ],
   pointsCount: {
     type: Number,
     default: 1,
@@ -130,7 +128,9 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: [commentSchema],
+  comments: [ {
+    type: String,
+  } ],
   commentCount: {
     type: Number,
     default: 0,

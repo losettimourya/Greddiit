@@ -32,6 +32,7 @@ const ToggleForm = () => {
 		lastName: "",
 		email: "",
 		password: "",
+		username: "",
 	});
 	const navigate = useNavigate();
 
@@ -112,7 +113,15 @@ const ToggleForm = () => {
 							required
 							className={styles.input}
 						/>
-						{/* {error && <div className={styles.error_msg}>{error}</div>} */}
+						<input
+							type="username"
+							placeholder="Username"
+							name="username"
+							onChange={handleChangesignup}
+							value={datasignup.username}
+							required
+							className={styles.input}
+						/>
 						<button type="submit" className={styles.green_btn}>
 							Sign Up
 						</button>

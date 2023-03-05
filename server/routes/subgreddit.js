@@ -103,6 +103,41 @@ router.delete("/:id", async(req,res) => {
         console.log(error)
     }
 })
+router.post("/upvote", async(req,res) => {
+    try{
+        const postt = await posts.findById(req.body.post)
+        postt.upvotecount = postt.upvotecount + 1
+        await postt.save()
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
+router.post("/downvote", async(req,res) => {
+    try{
+        const postt = await posts.findById(req.body.post)
+        console.log(postt)
+        postt.downvotecount = postt.downvotecount + 1
+        await postt.save()
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
+router.post("/comments", async(req,res) => {
+    try{
+        const postt = await posts.findById(req.body.post)
+        console.log(req.body)
+        postt.comments.push(req.body.comment)
+        await postt.save()
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
 // router.get("/", async(req,res) => {
 //     try{
 //         const subred = await subgreddiit.findOne({admin : localStorage.getItem("token")});

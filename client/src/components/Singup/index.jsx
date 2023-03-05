@@ -9,6 +9,7 @@ const Signup = () => {
 		lastName: "",
 		email: "",
 		password: "",
+		username: "",
 	});
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
@@ -73,6 +74,15 @@ const Signup = () => {
 							name="email"
 							onChange={handleChangesignup}
 							value={datasignup.email}
+							required
+							className={styles.input}
+						/>
+						<input
+							type="username"
+							placeholder="Username"
+							name="username"
+							onChange={handleChangesignup}
+							value={datasignup.username}
 							required
 							className={styles.input}
 						/>

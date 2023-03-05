@@ -3,10 +3,21 @@ import axios from 'axios';
 import Navbar from '../Navbar';
 
 const SavedPosts = () => {
+  const [comment,setcomment] = useState('')
   const [postts, setposts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('name');
-
+  const handleaddcomment = (postt) => {
+    try{
+      console.log(comment)
+      axios
+        .post("http://localhost:8080/api/subgreddit/comments", { post: postt, comment: comment})
+        .catch((err) => console.log(err));
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await axios.get("http://localhost:8080/api/savedpost");
@@ -34,6 +45,16 @@ const SavedPosts = () => {
     //console.log(filtered)
     setposts(filtered);
   };
+  const handleupvote = async(id) => {
+    axios
+      .post("http://localhost:8080/api/subgreddit/upvote", { post: id, name: localStorage.getItem("token")})
+      .catch((err) => console.log(err));
+  }
+  const handledownvote = async(id) => {
+    axios
+      .post("http://localhost:8080/api/subgreddit/downvote", { post: id, name: localStorage.getItem("token")})
+      .catch((err) => console.log(err));
+  }
   const handleunsave = async(postid) => {
     try{
       console.log(postid)
@@ -61,7 +82,26 @@ const SavedPosts = () => {
               <p>Content: {post.textSubmission}</p>
               <p>Created by: {post.author}</p>
               <p>Subreddit: {post.subreddit}</p>
+              <p>Upvote count: {post.upvotecount}</p>
+              <p>Downvote count: {post.downvotecount}</p>
               <button onClick={(event) => handleunsave(post._id)}>Unsave</button>
+              <button onClick={(event) => handleupvote(post._id)}>Upvote</button>
+              <button onClick={(event) => handledownvote(post._id)}>Downvote</button>
+              <br />
+              <form onSubmit={(event) => handleaddcomment(post._id)}>
+  <div>
+    <label for="comment">Add Comment:</label>
+    <input id="comment" value={comment} onChange={(event) => setcomment(event.target.value)} required/>
+  </div>
+  <button type="submit">Submit</button>
+</form>
+<h3>Comments:</h3>
+<h3>{post.comments.length}</h3>
+<ul>
+{post.comments.map(comment => (
+  <li>{comment}</li>
+))}
+</ul>
           </li>
         ))}
       </ul>

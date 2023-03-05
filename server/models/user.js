@@ -9,8 +9,10 @@ const userSchema = new mongoose.Schema({
 	lastName: { type: String, required: true },
 	email: { type: String, required: true },
 	password: { type: String, required: true },
+	username: { type: String, required: true},
 	posts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Post', },],
-	subscribedSubs: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Subreddit',},],
+	followers: [ { type: String }],
+	following: [ { type: String }],
 	totalComments: { type: Number, default: 0, },
 	savedPosts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Posts'}],
 	},
@@ -34,6 +36,7 @@ const validate = (data) => {
 		lastName: Joi.string().required().label("Last Name"),
 		email: Joi.string().email().required().label("Email"),
 		password: passwordComplexity().required().label("Password"),
+		username: Joi.string().required().label("Username")
 	});
 	return schema.validate(data);
 };
