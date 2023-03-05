@@ -38,6 +38,11 @@ const subredditSchema = new mongoose.Schema(
         type: String,
       }
     ],
+    tags: [
+      {
+        type: String,
+      }
+    ],
   },
   {
     timestamps: true,

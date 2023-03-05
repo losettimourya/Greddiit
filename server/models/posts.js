@@ -98,6 +98,10 @@ const postSchema = new mongoose.Schema({
   author: {
     type: String,
   },
+  isSaved: {
+    type: Boolean,
+    default: false,
+  },
   upvotedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,

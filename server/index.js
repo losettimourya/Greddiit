@@ -6,6 +6,7 @@ const connection = require("./db");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 const subgredditRoutes = require("./routes/subgreddit");
+const savedpostRoutes = require("./routes/savedpost") 
 // const postRoutes = require("./routes/post");
 
 // database connection
@@ -19,6 +20,7 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/subgreddit", subgredditRoutes);
+app.use("/api/savedpost", savedpostRoutes)
 // app.use("/api/posts", postRoutes);
 
 const port = process.env.PORT || 8080;

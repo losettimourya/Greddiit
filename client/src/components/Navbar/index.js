@@ -31,6 +31,9 @@ const Navbar = () => {
           <NavLink to="/allsubgreddiit" activeStyle>
             Subgreddiits
           </NavLink>
+          <NavLink to="/savedposts" activeStyle>
+            SavedPosts
+          </NavLink>
           {/* Second Nav */}
           {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
         </NavMenu>

@@ -3,6 +3,14 @@ import axios from 'axios';
 import Navbar from '../Navbar';
 import { useParams } from 'react-router-dom';
 import styles from "./styles.module.css";
+import {
+  Nav,
+  NavLink,
+  Bars,
+  NavMenu,
+  NavBtn,
+  NavBtnLink,
+} from '../Navbar/NavbarElements';
 
 const SubredditDetails = () => {
   const [postts, setposts] = useState([]);
@@ -17,7 +25,7 @@ const SubredditDetails = () => {
         let c = "http://localhost:8080/api/subgreddit/"
         let d = idd.id
         let p = c.concat(d)
-        console.log(p)
+        //console.log(p)
       const response = await axios.get(p);
       setSubreddit(response.data);
     }
@@ -29,6 +37,11 @@ const SubredditDetails = () => {
 
     fetchSubreddit();
   }, [idd]);
+  const handleSavePost = async(id) => {
+    axios
+      .post("http://localhost:8080/api/savedpost", { post: id, name: localStorage.getItem("token")})
+      .catch((err) => console.log(err));
+  }
   const handleClick = () => {
     setShowForm(true)
   }
@@ -46,7 +59,7 @@ const SubredditDetails = () => {
       let p = c.concat(d)
       let q = "/posts"
       let r = p.concat(q)
-      console.log(r)
+      //console.log(r)
 			const res = await axios.post(r, nameform);
 		} catch (error) {
 			console.log(error)
@@ -70,11 +83,23 @@ const SubredditDetails = () => {
     return <div>Loading...</div>;
   }
   //console.log(subreddit)
-  console.log(subreddit.bannedkeywords)
+  //console.log(subreddit.bannedkeywords)
   let commasep = subreddit.bannedkeywords.join(",")
   return (
     <div>
       <Navbar />
+      <Nav>
+        <Bars />
+  
+        <NavMenu>
+        <NavLink to='/users' activeStyle>
+            Users
+          </NavLink>
+          <NavLink to='/joiningrequests' activeStyle>
+            Joining Requests
+          </NavLink>
+        </NavMenu>
+      </Nav>
       <h1>Name: {subreddit.subredditName}</h1>
       <p>Description: {subreddit.description}</p>
       <p>Created by: {subreddit.admin}</p>
@@ -112,9 +137,14 @@ const SubredditDetails = () => {
       <ul>
         {postts.map(postt => (
           <li key={postt._id}>
-            <p>Title: {postt.title}</p>
+            <h3>Title: {postt.title}</h3>
             <p>Content: {postt.textSubmission}</p>
             <p>Author: {postt.author}</p>
+            {(postt.isSaved) ? (
+        <p>Post saved!</p>
+      ) : (
+        <button onClick={(event) => handleSavePost(postt._id)}>Save post</button>
+      )}
           </li>
         ))}
       </ul>

@@ -34,4 +34,35 @@ router.get("/", async(req, res) => {
 		console.log(error)
 	}
 })
+// router.post("/savedposts", async(req,res) => {
+// 	try{
+// 		const userr = await User.findOne({email: req.body.email})
+// 		let flag=0
+// 		for(i=0;i<userr.savedPosts.length;i++)
+// 		{
+// 			if(userr.savedPosts[i] === req.body.post)
+// 			{
+// 				flag=1
+// 				break
+// 			}
+// 		}
+// 		if(flag==0)
+// 		{
+// 		userr.savedPosts.push(req.body.post)
+// 		}
+// 		await userr.save()
+// 		res.json(req.body.post)
+
+// 	}
+// 	catch(error)
+// 	{
+// 		console.log(error)
+// 	}
+// })
+// router.get("/savedposts", async(req,res) => {
+// 	try{
+// 		const userr = await User.findById(id)
+// 		res.json(userr.savedPosts)
+// 	}
+// })
 module.exports = router;

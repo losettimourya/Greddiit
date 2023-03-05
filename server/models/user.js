@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
 	posts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Post', },],
 	subscribedSubs: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Subreddit',},],
 	totalComments: { type: Number, default: 0, },
+	savedPosts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Posts'}],
 	},
 	{
 	  timestamps: true,

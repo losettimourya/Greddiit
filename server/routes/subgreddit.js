@@ -15,7 +15,8 @@ router.post("/", async (req,res) => {
             posts: [],
             followedBy: [],
             followerCount: 1,
-            bannedkeywords: req.body.bannedkeywords
+            bannedkeywords: req.body.bannedkeywords,
+            tags: req.body.tags,
         }).save();
         res.status(201).send(newsubgreddit);
     }
@@ -76,7 +77,7 @@ router.get("/:id/posts", async(req,res) => {
         let m = []
         for (i=0;i<subred.posts.length;i++)
         {
-        const k = await posts.findById(subred.posts[0])
+        const k = await posts.findById(subred.posts[i])
         m.push(k)
         }
         //console.log(m)
