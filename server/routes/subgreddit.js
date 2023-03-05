@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {subgreddiit} = require("../models/subgreddit")
-const {posts} = require("../models/posts")
+const {posts} = require("../models/posts");
+const { savedpost } = require("../models/savedpost");
 router.post("/", async (req,res) => {
     try {
         // const subgred = await subgreddiit.findOne({subredditName: req.body.name})
@@ -57,12 +58,14 @@ router.post("/:id/posts", async(req,res) => {
         if (!subred) {
             return res.status(404).json({ message: 'Subreddit not found' });
           }
+        const subredd = await subgreddiit.findById(req.body.subreddit)
         const postt = await new posts({
             title: req.body.title,
             author: req.body.author,
             textSubmission: req.body.content,
-            subreddit: req.body.subreddit
+            subreddit: subredd.subredditName
         }).save()
+        console.log(postt.subreddit)
         subred.posts.push(postt)
         await subred.save()
         res.send(postt)
@@ -90,7 +93,9 @@ router.get("/:id/posts", async(req,res) => {
 router.delete("/:id", async(req,res) => {
     try{
         const { id } = req.params;
-        await posts.deleteMany({subreddit: id})
+        const subgred = await subgreddiit.findById(id)
+        await posts.deleteMany({subreddit: subgred.subredditName})
+        await savedpost.deleteMany({subreddit: subgred.subredditName})
         await subgreddiit.findByIdAndDelete(id)
     }
     catch(error)

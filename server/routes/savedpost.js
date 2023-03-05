@@ -14,13 +14,13 @@ router.post("/", async(req,res) => {
     console.log(postt.title)
     console.log(postt.isSaved)
     postt.isSaved = true
-    console.log(postt.isSaved)
+    console.log(postt)
     await postt.save()
     res.status(201).send(savedpostt)
 }
 catch(error)
 {
-    console.log(error)
+    //console.log(error)
 }
 
 })
@@ -32,6 +32,22 @@ router.get("/", async(req,res) => {
         //     console.log(savedposts[i])
         // }
         res.json(savedposts)
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
+router.delete("/:id", async(req,res) => {
+    try{
+        const postid = req.params.id
+        console.log(req.params.id)
+        // const postt = await savedpost.findById(postid)
+        const posttt = await posts.findById(postid)
+        console.log(posttt)
+        // await posts.findOne({title: postt.title, textSubmission: postt.textSubmission }).save()
+        posttt.isSaved = false
+        await posttt.save()
     }
     catch(error)
     {
