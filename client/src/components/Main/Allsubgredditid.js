@@ -148,6 +148,7 @@ let abc = ""
       <p>Banned key words:</p>
       <p>{commasep}</p>
       <p>Number of posts: {subreddit.posts.length}</p>
+      <p>Number of users: {subreddit.members.length}</p>
       <button onClick={handleClick}>Add new post</button>
       {showForm && (
         <form className={styles.form_container} onSubmit={handleSubmit}>

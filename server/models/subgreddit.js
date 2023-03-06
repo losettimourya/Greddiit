@@ -26,6 +26,9 @@ const subredditSchema = new mongoose.Schema(
     members: [{
       type: String,
     }],
+    leftusers: [{
+      type: String,
+    }],
     followedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,

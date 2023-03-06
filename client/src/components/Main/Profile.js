@@ -15,6 +15,8 @@ import Navbar from "../Navbar";
 // };
 // mongoose.connect("mongodb+srv://Mourya07:Mourya07@cluster0.yjrbwzd.mongodb.net/?retryWrites=true&w=majority", connectionParams);
 const Main = () => {
+	const [showfollowing,setshowfollowing] = useState(false)
+	const [showfollowers,setshowfollowers] = useState(false)
 	const [datalogin, setDatalogin] = useState({ email: "", password: "" });
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -90,7 +92,9 @@ const Main = () => {
 				<h3>Username: </h3>
 				<p> {userdetails.username}</p>
 				<br />
-				<h3>Following: {followingg.length}</h3>
+				<h3>Following: <button onClick={(event) => setshowfollowing(true)}>{followingg.length}</button></h3>
+				{showfollowing && (
+					<div>
 				 <ul>
         {followingg.map(user => (
           <li>
@@ -99,16 +103,24 @@ const Main = () => {
           </li>
         ))}
       </ul> 
+	  <button onClick={(event) => setshowfollowing(false)}>Hide</button>
+	  </div>
+)}
 
-				<h3>Followers: {followerss.length}</h3>
-				<ul>
+				<h3>Followers: <button onClick={(event) => setshowfollowers(true)}>{followerss.length}</button></h3>
+				{ showfollowers && 
+				(
+				<div><ul>
         {followerss.map(user => (
           <li>
             <p>{user}</p>
 			<button onClick={(event) => handleremovefollow(user)}>Remove</button>
           </li>
         ))}
-      </ul> 
+      </ul>
+	  <button onClick={(event) => setshowfollowers(false)}>Hide</button>
+	  </div>
+	  ) }
 			</div>
 		</div>
 	);

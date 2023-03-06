@@ -24,7 +24,6 @@ const DisplayUsers = () => {
       console.log("res",response.data)
       //console.log(filtered)
       setposts(response.data);
-      console.log("postts",postts.members)
     };
 
     fetchPosts();
@@ -34,8 +33,9 @@ const DisplayUsers = () => {
     <div>
         <Navbar />
       <h1>Users</h1>
+      <p>Subgreddiit Name: {postts.subredditName}</p>
        <ul>
-        {postts.members.map(post => (
+        {postts.members && postts.members.map(post => (
           <li>
               <p>Name: {post}</p>
               </li>

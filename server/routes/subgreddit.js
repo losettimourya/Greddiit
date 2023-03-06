@@ -18,7 +18,9 @@ router.post("/", async (req,res) => {
             followerCount: 1,
             bannedkeywords: req.body.bannedkeywords,
             tags: req.body.tags,
-        }).save();
+        });
+        newsubgreddit.members.push(req.body.admin)
+        await newsubgreddit.save()
         res.status(201).send(newsubgreddit);
     }
     catch (error) {
@@ -176,12 +178,56 @@ router.post("/join", async(req,res) => {
                 break
             }
         }
+        for(let i =0;i<subgred.leftusers.length;i++)
+        {
+            if(subgred.leftusers[i] === req.body.params.email)
+            {
+                flag=2
+                break
+            }
+        }
         if(flag === 0)
         {
             subgred.members.push(req.body.params.email)
             console.log(subgred.members)
             await subgred.save()
+            res.send({makealert: false})
 
+        }
+        if(flag === 2)
+        {
+            res.send({makealert: true})
+        }
+        if(flag === 1)
+        {
+            res.send({makealert: false})
+        }
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
+router.post("/leave", async(req,res) => {
+    try{
+        //console.log("query",req.query)
+        console.log("body",req.body)
+        const subgred = await subgreddiit.findById(req.body.params.id)
+        let flag = 0
+        for(let i =0;i<subgred.members.length;i++)
+        {
+            if(subgred.members[i] === req.body.params.email)
+            {
+                flag=1
+                break
+            }
+        }
+        if(flag === 1)
+        {
+            subgred.members = subgred.members.filter(email => email!=req.body.params.email)
+            subgred.leftusers.push(req.body.params.email)
+            console.log(subgred.members)
+            await subgred.save()
         }
     }
     catch(error)
