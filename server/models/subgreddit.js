@@ -23,6 +23,9 @@ const subredditSchema = new mongoose.Schema(
     admin:  {
       type: String,
     },
+    members: [{
+      type: String,
+    }],
     followedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,

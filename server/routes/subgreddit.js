@@ -64,11 +64,35 @@ router.post("/:id/posts", async(req,res) => {
             author: req.body.author,
             textSubmission: req.body.content,
             subreddit: subredd.subredditName
-        }).save()
+        })
         console.log(postt.subreddit)
+        const regexes = subredd.bannedkeywords.map(keyword => new RegExp(keyword, 'gi'))
+        let flag = 0
+        regexes.forEach(regex => {
+            if (regex.test(postt.textSubmission)) {
+              flag=1
+            }
+          });
+        if(flag === 1)
+        {
+            console.log("Post contains the banned keyword")
+            for (let i = 0; i < subredd.bannedkeywords.length; i++) {
+                postt.textSubmission = postt.textSubmission.replace(subredd.bannedkeywords[i], "*".repeat(subredd.bannedkeywords[i].length));
+              }
+              console.log(postt.textSubmission)
+              await postt.save()
         subred.posts.push(postt)
         await subred.save()
-        res.send(postt)
+        res.send({makealert: true})
+
+        }
+        else
+        {
+            await postt.save()
+        subred.posts.push(postt)
+        await subred.save()
+        res.send({makealert: false})
+        }
     }
     catch(error){
         console.log(error)
@@ -132,6 +156,33 @@ router.post("/comments", async(req,res) => {
         console.log(req.body)
         postt.comments.push(req.body.comment)
         await postt.save()
+    }
+    catch(error)
+    {
+        console.log(error)
+    }
+})
+router.post("/join", async(req,res) => {
+    try{
+        //console.log("query",req.query)
+        console.log("body",req.body)
+        const subgred = await subgreddiit.findById(req.body.params.id)
+        let flag = 0
+        for(let i =0;i<subgred.members.length;i++)
+        {
+            if(subgred.members[i] === req.body.params.email)
+            {
+                flag=1
+                break
+            }
+        }
+        if(flag === 0)
+        {
+            subgred.members.push(req.body.params.email)
+            console.log(subgred.members)
+            await subgred.save()
+
+        }
     }
     catch(error)
     {

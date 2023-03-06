@@ -20,6 +20,18 @@ const SubredditsList = () => {
   const handleSortByChange = (e) => {
     setSortBy(e.target.value);
   };
+  const handlejoin = async(id) => {
+    try{
+    const data = {
+      id: id,
+      email: localStorage.getItem("token")
+    }
+    const response = axios.post("http://localhost:8080/api/subgreddit/join",{params: data}) ;
+  }
+  catch(error){
+    console.log(error)
+  }
+  }
   if (sortBy === 'name') {
     filteredSubreddits.sort((a, b) => a.subredditName.localeCompare(b.subredditName));
   } else if (sortBy === 'followers') {
@@ -44,7 +56,7 @@ const SubredditsList = () => {
           <li key={subreddit._id}>
             <a href={`/allsubgreddiit/${subreddit._id}`}>{subreddit.subredditName}</a>
             {!(subreddit.admin === localStorage.getItem("token")) && (
-              <button>Join</button>
+              <button onClick={(event) => handlejoin(subreddit._id)}>Join</button>
             )}
             {(subreddit.admin === localStorage.getItem("token")) && (
               <button>Leave</button>

@@ -96,6 +96,10 @@ let abc = ""
       let r = p.concat(q)
       //console.log(r)
 			const res = await axios.post(r, nameform);
+      if(res.data.makealert)
+      {
+        alert("The post contains the banned key word")
+      }
 		} catch (error) {
 			console.log(error)
 		}
@@ -120,6 +124,9 @@ let abc = ""
   //console.log(subreddit)
   //console.log(subreddit.bannedkeywords)
   let commasep = subreddit.bannedkeywords.join(",")
+  let url = "/allsubgreddiit/"
+  url = url.concat(subreddit._id)
+  url = url.concat("/users")
   return (
     <div>
       <Navbar />
@@ -127,7 +134,7 @@ let abc = ""
         <Bars />
   
         <NavMenu>
-        <NavLink to='/users' activeStyle>
+        <NavLink to={url} activeStyle>
             Users
           </NavLink>
           <NavLink to='/joiningrequests' activeStyle>
