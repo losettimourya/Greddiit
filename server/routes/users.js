@@ -96,12 +96,15 @@ router.delete("/followers", async(req,res) => {
 		//console.log("email", req)
 		const user1 = await User.findOne({email:rec})
 		const user2 = await User.findOne({email:rec2})
+		console.log("rec", user1.followers)
+		console.log("rec2", user2.following)
 		user1.followers = user1.followers.filter(element => element!=rec2)
 		user2.following = user2.following.filter(element => element!=rec)
 		//const updateduser1 = await user1.save()
 		if(rec !== rec2)
 		{
-			const updateduser1 = await user1.save()
+			
+		const updateduser1 = await user1.save()
 		const updateduser2 = await user2.save()
 		}
 		else
@@ -112,8 +115,6 @@ router.delete("/followers", async(req,res) => {
 			await user2.save()
 		}
 		//res.status(200).send("1089")
-
-
 	}
 	catch(error){
 		console.log(error)
@@ -126,8 +127,11 @@ router.delete("/following", async(req,res) => {
 		//console.log("email", req)
 		const user1 = await User.findOne({email:rec})
 		const user2 = await User.findOne({email:rec2})
-		user1.followers = user1.followers.filter(element => element!=rec2)
-		user2.following = user2.following.filter(element => element!=rec)
+		user1.following = user1.following.filter(element => element!=rec2)
+		user2.followers = user2.followers.filter(element => element!=rec)
+		console.log("email", rec)
+		console.log("local", rec2)
+		console.log(user2.following)
 		//const updateduser1 = await user1.save()
 		if(rec !== rec2)
 		{

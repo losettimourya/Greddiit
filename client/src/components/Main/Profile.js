@@ -80,9 +80,6 @@ const Main = () => {
 		<div>
 			<Navbar />
 			<div className={styles.main_container}>
-				<nav className={styles.navbar}>
-					<h1>GREDDIIT</h1>
-				</nav>
 				<h3>First Name: </h3>
 				<p> {userdetails.firstName}</p>
 				<h3>Last Name: </h3>

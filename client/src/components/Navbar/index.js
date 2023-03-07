@@ -8,10 +8,12 @@ import {
   NavBtn,
   NavBtnLink,
 } from './NavbarElements';
+import styles from "../Main/styles.module.css"
 const handlelogout = () => {
   localStorage.removeItem("token")
-  window.location.reload()
+   window.location.reload()
 }
+
 const Navbar = () => {
   return (
     <>
@@ -41,6 +43,9 @@ const Navbar = () => {
           <NavBtnLink to="/" onClick={handlelogout}>Logout</NavBtnLink>
         </NavBtn>
       </Nav>
+      <nav className={styles.navbar}>
+					<h1>GREDDIIT</h1>
+				</nav>
     </>
   );
 };

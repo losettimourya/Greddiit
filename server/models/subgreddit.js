@@ -5,6 +5,8 @@ const subredditSchema = new mongoose.Schema(
     subredditName: {
       type: String,
       required: true,
+      unique: true,
+      dropDups: true
     },
     description: {
       type: String,
@@ -42,6 +44,12 @@ const subredditSchema = new mongoose.Schema(
     bannedkeywords: [
       {
         type: String,
+      }
+    ],
+    reportedposts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Reportedpost',
       }
     ],
     tags: [

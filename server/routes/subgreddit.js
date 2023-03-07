@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {subgreddiit} = require("../models/subgreddit")
 const {posts} = require("../models/posts");
 const { savedpost } = require("../models/savedpost");
+const {reportedpost} = require("../models/reportedpost")
 router.post("/", async (req,res) => {
     try {
         // const subgred = await subgreddiit.findOne({subredditName: req.body.name})
@@ -122,6 +123,7 @@ router.delete("/:id", async(req,res) => {
         const subgred = await subgreddiit.findById(id)
         await posts.deleteMany({subreddit: subgred.subredditName})
         await savedpost.deleteMany({subreddit: subgred.subredditName})
+        await reportedpost.deleteMany({subreddit: id})
         await subgreddiit.findByIdAndDelete(id)
     }
     catch(error)

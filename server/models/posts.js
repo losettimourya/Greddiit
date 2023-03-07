@@ -120,6 +120,11 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  savedby: [
+    {
+      type:String,
+    }
+  ],
   hotAlgo: {
     type: Number,
     default: Date.now,

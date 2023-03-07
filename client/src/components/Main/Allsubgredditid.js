@@ -13,6 +13,9 @@ import {
 } from '../Navbar/NavbarElements';
 
 const SubredditDetails = () => {
+  const [ismember,setismember] = useState(false)
+  const [reporting,setreport] = useState(false)
+  const [concern, setconcern] = useState('')
   const [comment,setcomment] = useState('')
   const [postts, setposts] = useState([]);
   const [nameform, setnameform] = useState({ title: "", content: "", author: localStorage.getItem("token"), subreddit: useParams().id});
@@ -54,8 +57,13 @@ let abc = ""
       .post("http://localhost:8080/api/subgreddit/downvote", { post: id, name: localStorage.getItem("token")})
       .catch((err) => console.log(err));
   }
-  const handleClick = () => {
+  const handleClick = (admin,members) => {
+    setShowForm(false)
+    console.log(members)
+    if(admin === localStorage.getItem("token") || members.includes(localStorage.getItem("token")))
+    {
     setShowForm(true)
+    }
   }
   const handleaddcomment = (postt) => {
     try{
@@ -85,6 +93,17 @@ let abc = ""
   }
   const handleChangecontent = (event) => {
     setnameform({ ...nameform, content: event.target.value})
+  }
+  const handleaddreport = async(id) => {
+    setreport(false)
+    const data = {
+      id: id,
+      reporter: localStorage.getItem("token"),
+      concern: concern,
+      subreddit: nameform.subreddit,
+    }
+    const response = axios.post("http://localhost:8080/api/reportedpost", {params: data})
+
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -118,6 +137,9 @@ let abc = ""
 
     fetchposts();
   }, []);
+  const handlereportbutton = () => {
+    setreport(true)
+  }
   if (!subreddit) {
     return <div>Loading...</div>;
   }
@@ -127,6 +149,10 @@ let abc = ""
   let url = "/allsubgreddiit/"
   url = url.concat(subreddit._id)
   url = url.concat("/users")
+  let url1 = "/allsubgreddiit/"
+  url1 = url1.concat(subreddit._id)
+  url1 = url1.concat("/reports")
+  
   return (
     <div>
       <Navbar />
@@ -140,8 +166,15 @@ let abc = ""
           <NavLink to='/joiningrequests' activeStyle>
             Joining Requests
           </NavLink>
+          <NavLink to={url1} activeStyle>
+            Reports
+          </NavLink>
+          <NavLink to='/stats' activeStyle>
+            Stats
+          </NavLink>
         </NavMenu>
       </Nav>
+      <img src="https://source.unsplash.com/random" alt="Random Image" width="200" height="200"></img>
       <h1>Name: {subreddit.subredditName}</h1>
       <p>Description: {subreddit.description}</p>
       <p>Created by: {subreddit.admin}</p>
@@ -149,7 +182,7 @@ let abc = ""
       <p>{commasep}</p>
       <p>Number of posts: {subreddit.posts.length}</p>
       <p>Number of users: {subreddit.members.length}</p>
-      <button onClick={handleClick}>Add new post</button>
+      <button onClick={(event) => handleClick(subreddit.admin,subreddit.members)}>Add new post</button>
       {showForm && (
         <form className={styles.form_container} onSubmit={handleSubmit}>
         <h1>ADD DETAILS</h1>
@@ -186,13 +219,35 @@ let abc = ""
             <p>Upvote count: {postt.upvotecount}</p>
             <p>Downvote count: {postt.downvotecount}</p>
             <button onClick={(event) => handleFollow(postt.author)}> Follow </button>
-            {(postt.isSaved) ? (
+            {(((subreddit.admin === localStorage.getItem("token")) || subreddit.members.includes(localStorage.getItem("token"))) && postt.isSaved) ? (
         <p>Post saved!</p>
-      ) : (
+      ) : ((((subreddit.admin === localStorage.getItem("token")) || subreddit.members.includes(localStorage.getItem("token"))))?(
         <button onClick={(event) => handleSavePost(postt._id)}>Save post</button>
+      ):(
+        <div>
+
+        </div>
+      )
+
       )}
+      {((subreddit.admin === localStorage.getItem("token")) || subreddit.members.includes(localStorage.getItem("token"))) && (
+        <div>
       <button onClick={(event) => handleupvote(postt._id)}>Upvote</button>
       <button onClick={(event) => handledownvote(postt._id)}>Downvote</button>
+      <button onClick={(event) => handlereportbutton()}>Report</button>
+      </div>
+      )}
+      {((subreddit.admin === localStorage.getItem("token")) || subreddit.members.includes(localStorage.getItem("token"))) && reporting && (
+        <form onSubmit={(event) => handleaddreport(postt._id)}>
+          <div>
+            <label for="report">Add concern:</label>
+            <input id="report" value={concern} onChange={(event) => setconcern(event.target.value)} required/>
+          </div>
+          <button type="submit">Submit Report</button>
+        </form>
+      )}
+      {((subreddit.admin === localStorage.getItem("token")) || subreddit.members.includes(localStorage.getItem("token"))) && (
+        <div>
       <br />
       <form onSubmit={(event) => handleaddcomment(postt._id)}>
   <div>
@@ -201,6 +256,8 @@ let abc = ""
   </div>
   <button type="submit">Submit</button>
 </form>
+</div>
+      )}
 <h3>Comments:</h3>
 <h3>{postt.comments.length}</h3>
 <ul>

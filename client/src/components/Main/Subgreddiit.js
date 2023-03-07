@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import Navbar from "../Navbar";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Subgreddiit() {
   const [subreddits, setSubreddits] = useState([]);
-
+  const Navigate = useNavigate()
   useEffect(() => {
     const fetchSubreddits = async () => {
       const response = await axios.get("http://localhost:8080/api/subgreddit");
@@ -28,6 +29,11 @@ function Subgreddiit() {
     } catch (error) {
       console.log(error);
     }
+  }
+  const handleopen = async (location) => {
+    const loc = `/allsubgreddiit/${location}`
+    console.log(loc)
+    Navigate(loc)
   }
   const [showForm, setShowForm] = useState(false);
   const [nameform, setnameform] = useState({ name: "", description: "", tags: [], bannedkeywords: [], admin: localStorage.getItem("token")});
@@ -116,6 +122,7 @@ function Subgreddiit() {
         {subreddits.map(subreddit => (
           <li key={subreddit._id}>
             <a href={`/allsubgreddiit/${subreddit._id}`}>{subreddit.subredditName}</a>
+            <button onClick={(event) => handleopen(subreddit._id)}>Open</button>
             <button onClick={() => handleDelete(subreddit._id)}>Delete</button>
           </li>
         ))}

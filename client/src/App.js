@@ -9,6 +9,7 @@ import SubredditsList from "./components/Main/Allsubgreddit";
 import SubredditDetails from "./components/Main/Allsubgredditid";
 import SavedPosts from "./components/Main/SavedPosts";
 import DisplayUsers from "./components/Main/DisplayUsers";
+import DisplayReports from "./components/Main/Displayreports";
 function App() {
 	const user = localStorage.getItem("token");
 	const login = localStorage.getItem("token1")
@@ -23,6 +24,7 @@ function App() {
 			{user && <Route path="/allsubgreddiit" exact element={<SubredditsList/>} />}
 			{user && <Route path="/allsubgreddiit/:id" exact element={<SubredditDetails />} />}
 			{user && <Route path="/allsubgreddiit/:id/users" exact element={<DisplayUsers />} />}
+			{user && <Route path="/allsubgreddiit/:id/reports" exact element={<DisplayReports />} />}
 			{user && <Route path="/savedposts" exact element={<SavedPosts />} />}
 			<Route path="/" exact element={<ToggleForm />} />
 			<Route path="/home" element={<Navigate replace to="/" />} />
@@ -30,6 +32,9 @@ function App() {
 			<Route path="/subgreddiit" element={<Navigate replace to="/" />} />
 			<Route path="/allsubgreddiit" element={<Navigate replace to="/" />} />
 			<Route path="/allsubgreddiit/:id" element={<Navigate replace to="/" />} />
+			<Route path="/allsubgreddiit/:id/users" element={<Navigate replace to="/" />} />
+			<Route path="/allsubgreddiit/:id/reports" element={<Navigate replace to="/" />} />
+			<Route path="/savedposts" element={<Navigate replace to="/" />} />
 		</Routes>
 	);
 }

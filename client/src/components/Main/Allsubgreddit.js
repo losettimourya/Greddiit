@@ -98,8 +98,11 @@ const SubredditsList = () => {
             {!(subreddit.admin === localStorage.getItem("token")) && !(subreddit.members.includes(localStorage.getItem("token"))) && (
               <button onClick={(event) => handlejoin(subreddit._id)}>Join</button>
             )}
-            {(subreddit.members.includes(localStorage.getItem("token"))) && (
+            {(subreddit.members.includes(localStorage.getItem("token"))) && !(subreddit.admin === localStorage.getItem("token")) && (
               <button onClick={(event) => handleleave(subreddit._id)}>Leave</button>
+            )}
+            {(subreddit.admin === localStorage.getItem("token")) && (
+              <button>Leave</button>
             )}
           </li>
         ))}

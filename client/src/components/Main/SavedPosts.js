@@ -32,7 +32,7 @@ const SavedPosts = () => {
       //   }
       // }
       console.log(response.data)
-      const filtered = response.data.filter(postts => postts.author == localStorage.getItem("token"));
+      const filtered = response.data.filter(postts => postts.savedby.includes(localStorage.getItem("token")));
       //console.log(filtered)
       setposts(filtered);
     };
@@ -41,7 +41,7 @@ const SavedPosts = () => {
   }, []);
   const fetchPosts = async () => {
     const response = await axios.get("http://localhost:8080/api/savedpost");
-    const filtered = response.data.filter(postts => postts.author == localStorage.getItem("token"));
+    const filtered = response.data.filter(postts => postts.savedby.includes(localStorage.getItem("token")));
     //console.log(filtered)
     setposts(filtered);
   };
@@ -57,12 +57,15 @@ const SavedPosts = () => {
   }
   const handleunsave = async(postid) => {
     try{
+      const data = {
+        email: localStorage.getItem("token")
+      }
       console.log(postid)
       let c = "http://localhost:8080/api/savedpost/"
       let d = postid
       let p = c.concat(d)
       console.log(p)
-    await axios.delete(p)
+    await axios.delete(p, {params: data})
     fetchPosts()
     }
     catch(error)
@@ -81,7 +84,7 @@ const SavedPosts = () => {
               <p>Title: {post.title}</p>
               <p>Content: {post.textSubmission}</p>
               <p>Created by: {post.author}</p>
-              <p>Subreddit: {post.subreddit}</p>
+              <p>Subgreddiit: {post.subreddit}</p>
               <p>Upvote count: {post.upvotecount}</p>
               <p>Downvote count: {post.downvotecount}</p>
               <button onClick={(event) => handleunsave(post._id)}>Unsave</button>
